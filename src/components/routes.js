@@ -1,0 +1,25 @@
+const express = require('express');
+const userRoute = require('./user/UserRoutes');
+const userRouteAuth = require('./user/user.auth.route');
+const app = express();
+const flowRoute = require('./flow/flow.route');
+const flowStepRoute = require('./flow/flow-step/flow-step.route');
+const topicRoute  = require('./subject/topics/topic.route');
+const subjectRoute = require('./subject/subject.routes');
+const quizRoute = require('./subject/quiz/quiz.routes');
+const tagRoute = require('./tag/tag.routes');
+const videoRoute = require('./subject/video/video.routes');
+const studentRoute=require('./students/student.routes');
+const authentication = require('../middlewares/authentication');
+
+app.use('/auth', userRouteAuth);
+app.use('/user', userRoute);
+app.use('/flow', flowRoute);
+app.use('/step', flowStepRoute);
+app.use('/student',studentRoute);
+app.use('/subject',authentication.authenticateUser,subjectRoute);
+app.use('/topic', authentication.authenticateUser, topicRoute);
+app.use('/quiz', authentication.authenticateUser, quizRoute);
+app.use('/tag', authentication.authenticateUser, tagRoute);
+app.use('/video', authentication.authenticateUser, videoRoute);
+module.exports = app;
